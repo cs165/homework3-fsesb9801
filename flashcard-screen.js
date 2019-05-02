@@ -84,6 +84,8 @@ class FlashcardScreen {
 	{
 		this.dragStartX=parseInt(e.clientX)
 		this.dragStartY=parseInt(e.clientY)
+		this.diffX=0
+		this.diffY=0
 		this.touchDown=true
 	}
 	pointMove=(e)=>
