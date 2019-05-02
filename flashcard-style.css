@@ -3,7 +3,10 @@ TODO(you): Write any additional styles you need here.
 */
 
 #choices div:hover{
-	background-color:#eeeeee
+	background-color:#eeeeee;
+}
+.menu-buttons button:hover{
+	background-color:#eeeeee;
 }
 
 @keyframes flashcardAnim{
