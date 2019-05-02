@@ -21,10 +21,13 @@ class FlashcardScreen {
 		this.ygoMode=false
 		this.dragStartX=undefined
 		this.dragStartY=undefined
+		this.diffX=undefined
+		this.diffY=undefined
 		this.rightCard=0
 		this.wrongCard=0
 		this.touchDown=false
 		this.event=new Event('finished')
+		this.animStartTime=0
 		let thisObj=this
 		this.flashcardContainer.addEventListener('pointerdown',function(e){thisObj.pointDown(e)})
 		this.flashcardContainer.addEventListener('pointermove',function(e){thisObj.pointMove(e)})
@@ -87,19 +90,19 @@ class FlashcardScreen {
 	{
 		if(!this.touchDown)
 			return
-		let diffX=e.clientX-this.dragStartX
-		let diffY=e.clientY-this.dragStartY
-		let deg=0.2*diffX
+		this.diffX=e.clientX-this.dragStartX
+		this.diffY=e.clientY-this.dragStartY
+		let deg=0.2*this.diffX
 		let correctElem=document.querySelector('.status .correct')
 		let incorrectElem=document.querySelector('.status .incorrect')
-		this.flashcardContainer.style.transform='translate('+diffX+'px,'+diffY+'px) rotate('+deg+'deg)'
-		if(diffX>150)
+		this.flashcardContainer.style.transform='translate('+this.diffX+'px,'+this.diffY+'px) rotate('+deg+'deg)'
+		if(this.diffX>150)
 		{
 			document.body.style.backgroundColor='#78e6c3'
 			correctElem.textContent=(this.rightCard+1)
 			incorrectElem.textContent=this.wrongCard
 		}
-		else if(diffX<-150)
+		else if(this.diffX<-150)
 		{
 			document.body.style.backgroundColor='#e67878'
 			correctElem.textContent=this.rightCard
@@ -118,19 +121,36 @@ class FlashcardScreen {
 			return
 		this.touchDown=false
 		document.body.style.backgroundColor='#d0e6df'
-		this.flashcardContainer.style.transform='rotate(0deg) translate(0px,0px)'
-		if(e.clientX-this.dragStartX>150)
+		if(this.diffX>150)
 		{
 			this.rightCard++
+			this.flashcardContainer.style.transform='translate(0px,0px) rotate(0deg)'
 			this.newCard()
 		}
-		else if(e.clientX-this.dragStartX<-150)
+		else if(this.diffX<-150)
 		{
 			this.wrongCardWords[this.wrongCard]=this.deckWord[this.currentCard]
 			this.wrongCardDescs[this.wrongCard]=this.deckDesc[this.currentCard]
 			this.wrongCard++
+			this.flashcardContainer.style.transform='translate(0px,0px) rotate(0deg)'
 			this.newCard()
 		}
+		else
+		{
+			this.animStartTime=Date.now()
+			requestAnimationFrame(this.animToCenter)
+			this.flashcardContainer.style.transform='translate(0px,0px) rotate(0deg)'
+		}
+	}
+	animToCenter=()=>
+	{
+		var progress=1-(Date.now()-this.animStartTime)/600
+		var tx=this.diffX*progress
+		var ty=this.diffY*progress
+		var tdeg=tx*0.2
+		this.flashcardContainer.style.transform='translate('+tx+'px,'+ty+'px) rotate('+tdeg+'deg)'
+		if(progress>0)
+			requestAnimationFrame(this.animToCenter)
 	}
 	retry(restart)
 	{
