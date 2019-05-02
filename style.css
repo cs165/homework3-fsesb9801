@@ -37,6 +37,10 @@ body {
   width: 100%;
 }
 
+#choices div:hover{
+	background-color:#eeeeee
+}
+
 .menu-buttons button {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.25em;

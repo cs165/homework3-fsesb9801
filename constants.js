@@ -29,4 +29,16 @@ const FLASHCARD_DECKS = [{
     '바나나': 'banana',
     '복숭아': 'peach'
   }
+}, {
+  title: 'Sokko maho hatsudo! Basakasouru!',
+  words: {
+    '1 DORO': 'MONSUTA KADO',
+    '2 DORO': 'MONSUTA KADO',
+    '3 DORO': 'MONSUTA KADO',
+    '4 DORO': 'MONSUTA KADO',
+    '5 DORO': 'MONSUTA KADO',
+    '6 DORO': 'MONSUTA KADO',
+    '7 DORO': 'MONSUTA KADO',
+	'Mo yamete! Yugi!': 'HA☆NA☆SE!'
+  }
 }];

@@ -8,22 +8,57 @@
 // - Adding additional fields
 
 class App {
-  constructor() {
-    const menuElement = document.querySelector('#menu');
-    this.menu = new MenuScreen(menuElement);
+	constructor() {
+		const menuElement = document.querySelector('#menu');
+		this.menu = new MenuScreen(menuElement);
+		let appObject=this
+		Array.from(menuElement.querySelector('#choices').children).forEach(function(choice){
+			choice.addEventListener('click',function(){
+				appObject.toFlashCard(choice.innerText)
+			})
+		})
 
-    const mainElement = document.querySelector('#main');
-    this.flashcards = new FlashcardScreen(mainElement);
+		const mainElement = document.querySelector('#main');
+		this.flashcards = new FlashcardScreen(mainElement);
+		document.body.addEventListener('finished',function(){
+			appObject.toResult()
+		})
 
-    const resultElement = document.querySelector('#results');
-    this.results = new ResultsScreen(resultElement);
+		const resultElement = document.querySelector('#results');
+		this.results = new ResultsScreen(resultElement);
+		document.querySelector('#results .continue').addEventListener('click',function(){
+			appObject.flashcards.retry(appObject.results.startOver)
+			appObject.toFlashCard('',true)
+		})
+		document.querySelector('#results .to-menu').addEventListener('click',function(){
+			appObject.toMenu()
+		})
+		
 
-    // Uncomment this pair of lines to see the "flashcard" screen:
-    // this.menu.hide();
-    // this.flashcards.show();
+		// Uncomment this pair of lines to see the "flashcard" screen:
+		//this.menu.hide();
+		//this.flashcards.show();
 
-    // Uncomment this pair of lines to see the "results" screen:
-    // this.menu.hide();
-    // this.results.show();
-  }
+		// Uncomment this pair of lines to see the "results" screen:
+		// this.menu.hide();
+		// this.results.show();
+	}
+	toMenu()
+	{
+		this.menu.show()
+		this.flashcards.hide()
+		this.results.hide()
+	}
+	toFlashCard(selectedSet,retry)
+	{
+		this.menu.hide()
+		this.results.hide()
+		this.flashcards.show(selectedSet,retry)
+	}
+	toResult()
+	{
+		this.menu.hide();
+		this.flashcards.hide()
+		this.results.show(app.flashcards.rightCard,app.flashcards.wrongCard);
+	}
 }

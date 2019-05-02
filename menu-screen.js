@@ -7,15 +7,21 @@
 // - Adding additional fields
 
 class MenuScreen {
-  constructor(containerElement) {
-    this.containerElement = containerElement;
-  }
+	constructor(containerElement) {
+		this.containerElement = containerElement;
+		let choices=this.containerElement.querySelector('#choices')
+		FLASHCARD_DECKS.forEach(function(item){
+			let e=document.createElement('div')
+			e.innerText=item.title
+			choices.appendChild(e)
+		})
+	}
 
-  show() {
-    this.containerElement.classList.remove('inactive');
-  }
+	show() {
+		this.containerElement.classList.remove('inactive');
+	}
 
-  hide() {
-    this.containerElement.classList.add('inactive');
-  }
+	hide() {
+		this.containerElement.classList.add('inactive');
+	}
 }
